@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import faviconDark from './Assets/faviconDark.ico';
+import faviconLight from './Assets/faviconLight.ico';
 import './App.css';
 
 const FRAME_RATE = 120;
@@ -61,6 +63,7 @@ function App() {
     }
   }
 
+  //Download the image
   const saveFile = (ctx) => {
     let downloadLink = document.createElement("a");
     downloadLink.setAttribute("download", "hexagon.png");
@@ -72,6 +75,23 @@ function App() {
     downloadLink.setAttribute("href", url);
     downloadLink.click();
 };
+
+//Changes favicon on theme change
+useEffect(() => {
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+  if(theme === "light") {
+    link.href = faviconLight;
+  }
+  else{
+    link.href = faviconDark;
+  }
+}, [theme]);
+
 
   useEffect(() => {
     if (theme === "light") {
