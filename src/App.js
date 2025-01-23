@@ -26,8 +26,7 @@ function App() {
 
 
   const drawBoard = (ctx) => {
-    ctx.fillStyle = COLOR_SCHEME[theme].background;
-    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
   }
 
   const drawHexagon = (ctx, hexagon) => {
@@ -61,6 +60,18 @@ function App() {
       ctx.stroke();
     }
   }
+
+  const saveFile = (ctx) => {
+    let downloadLink = document.createElement("a");
+    downloadLink.setAttribute("download", "hexagon.png");
+    let dataURL = ctx.canvas.toDataURL("image/png");
+    let url = dataURL.replace(
+        /^data:image\/png/,
+        "data:application/octet-stream",
+    );
+    downloadLink.setAttribute("href", url);
+    downloadLink.click();
+};
 
   useEffect(() => {
     if (theme === "light") {
@@ -120,9 +131,9 @@ function App() {
 
     })
     drawAxis(ctx);
-    setTimeout(() => {
+    /*setTimeout(() => {
       setFrameCount(frameCount + 1);
-    }, [1000 / FRAME_RATE]);
+    }, [1000 / FRAME_RATE]);*/
     let animationFrameId;
     const render = () => {
       animationFrameId = window.requestAnimationFrame(render);
@@ -151,6 +162,10 @@ function App() {
           setType("canvas");
         }
       }}>{type}</button>
+      <button onClick={() => {
+        saveFile(canvasRef.current.getContext("2d"));
+      }}
+      >save</button>
       <canvas
         ref={canvasRef}
         id="canvas"
