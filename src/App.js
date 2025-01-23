@@ -19,15 +19,56 @@ const COLOR_SCHEME = {
     secondary: ["#FF00FF", "#FFFF00", "#00FFFF"]
   }
 }
+const ANIMATIONS = [
+  "no animation",
+  "spin",
+  "spin & stop"
+]
 function App() {
   const canvasRef = useRef(null);
   const [theme, setTheme] = useState("light");
   const [type, setType] = useState("canvas");
   const [frameCount, setFrameCount] = useState(0);
-  const [hexagons, setHexagons] = useState({});
+  const [animation, setAnimation] = useState(ANIMATIONS[0]);
+  const [animationFrame, setAnimationFrame] = useState(0);
+  const [animationPauseFrame, setAnimationPauseFrame] = useState(0);
+  const [hexagons, setHexagons] = useState({
+    0: {
+      position: {
+        x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+        y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+      },
+      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+      rotation: Math.PI / 6,
+      color: COLOR_SCHEME[theme].primary[0]
+    },
+    1: {
+      position: {
+        x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+        y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+      },
+      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+      rotation: Math.PI / 6,
+      color: COLOR_SCHEME[theme].primary[1]
+    },
+    2: {
+      position: {
+        x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+        y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+      },
+      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+      rotation: Math.PI / 6,
+      color: COLOR_SCHEME[theme].primary[2]
+    }
+  });
+  const [axisAngle, setAxisAngle] = useState({
+    0: Math.PI * 5 / 6,
+    1: Math.PI * 2 / 3 + Math.PI * 5 / 6,
+    2: Math.PI * 4 / 3 + Math.PI * 5 / 6
+  });
 
 
-  const drawBoard = (ctx) => {
+  const clearCanvas = (ctx) => {
     ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
   }
 
@@ -58,10 +99,76 @@ function App() {
     for (let i = 0; i < 3; i++) {
       ctx.beginPath();
       ctx.moveTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2);
-      ctx.lineTo(CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.cos(i * Math.PI * 2 / 3 + Math.PI * 5 / 6), CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.sin(i * Math.PI * 2 / 3 + Math.PI * 5 / 6));
+      ctx.lineTo(CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.cos(axisAngle[i]), CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.sin(axisAngle[i]));
       ctx.stroke();
     }
-  }
+  };
+
+  const handleAnimation = () => {
+    let newHexagons = {};
+    let newAxisAngle = {};
+    let deltaAngle = Math.PI / 120;
+    switch (animation) {
+      case ANIMATIONS[0]:
+        break;
+      case ANIMATIONS[1]:
+        Object.keys(hexagons).forEach((key, index) => {
+          newHexagons[key] = {
+            ...hexagons[key],
+            position: {
+              x: CANVAS_SIZE / 2 + Math.cos(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+              y: CANVAS_SIZE / 2 + Math.sin(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+            },
+            rotation: hexagons[key].rotation + deltaAngle,
+          };
+        });
+        setHexagons(newHexagons);
+        Object.keys(axisAngle).forEach((key) => {
+          newAxisAngle[key] = axisAngle[key] - deltaAngle;
+        });
+        setAxisAngle(newAxisAngle);
+        setAnimationFrame(animationFrame + 1);
+        break;
+      case ANIMATIONS[2]:
+        let PAUSE_FRAMES = FRAME_RATE / 2;
+        if(0 < animationPauseFrame && animationPauseFrame< PAUSE_FRAMES) {
+          setAnimationPauseFrame(animationPauseFrame + 1);
+        }
+        else if (animationPauseFrame === PAUSE_FRAMES) {
+          setAnimationPauseFrame(0);
+        }
+        else if (animationPauseFrame === 0) {
+          Object.keys(hexagons).forEach((key, index) => {
+            newHexagons[key] = {
+              ...hexagons[key],
+              position: {
+                x: CANVAS_SIZE / 2 + Math.cos(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+                y: CANVAS_SIZE / 2 + Math.sin(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+              },
+              rotation: hexagons[key].rotation + deltaAngle,
+            };
+          });
+          setHexagons(newHexagons);
+          Object.keys(axisAngle).forEach((key) => {
+            newAxisAngle[key] = axisAngle[key] - deltaAngle;
+          });
+          setAxisAngle(newAxisAngle);
+          let roundedCosAxisAngle = Math.round(Math.cos(newAxisAngle[0]) * 100);
+          let roundedSinAxisAngle = Math.round(Math.sin(newAxisAngle[0]) * 100);
+          if ((roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 5 / 6) * 100))||
+          (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100)) ||
+          (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100))) {
+            setAnimationPauseFrame(animationPauseFrame + 1);
+            setAnimationFrame(animationFrame + 1);
+          }else {
+            setAnimationFrame(animationFrame + 1);
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
   //Download the image
   const saveFile = (ctx) => {
@@ -69,44 +176,44 @@ function App() {
     downloadLink.setAttribute("download", "hexagon.png");
     let dataURL = ctx.canvas.toDataURL("image/png");
     let url = dataURL.replace(
-        /^data:image\/png/,
-        "data:application/octet-stream",
+      /^data:image\/png/,
+      "data:application/octet-stream",
     );
     downloadLink.setAttribute("href", url);
     downloadLink.click();
-};
+  };
 
-//Changes favicon on theme change
-useEffect(() => {
-  let link = document.querySelector("link[rel~='icon']");
-  if (!link) {
-    link = document.createElement('link');
-    link.rel = 'icon';
-    document.getElementsByTagName('head')[0].appendChild(link);
-  }
-  if(theme === "light") {
-    link.href = faviconLight;
-  }
-  else{
-    link.href = faviconDark;
-  }
-}, [theme]);
+  //Changes favicon on theme change
+  useEffect(() => {
+    let link = document.querySelector("link[rel~='icon']");
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+    if (theme === "light") {
+      link.href = faviconLight;
+    }
+    else {
+      link.href = faviconDark;
+    }
+  }, [theme]);
 
 
-//Gets user current theme 
-    useEffect(() => {
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? setTheme("dark")
-          : setTheme("light");
+  //Gets user current theme 
+  useEffect(() => {
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? setTheme("dark")
+      : setTheme("light");
   }, []);
 
   //Detects user theme change on browser
 
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
     event.matches ? setTheme("dark") : setTheme("light");
-});
+  });
 
-//Changes background and hexagon colors on theme change
+  //Changes background and hexagon colors on theme change
   useEffect(() => {
     if (theme === "light") {
       document.getElementById("App").style.backgroundColor = "white";
@@ -131,44 +238,18 @@ useEffect(() => {
       y: boundary.height / 2
     }*/
     //let hexSize = 50;
-    drawBoard(ctx);
-    setHexagons({
-      0: {
-        position: {
-          x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-        },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
-        color: COLOR_SCHEME[theme].primary[0]
-      },
-      1: {
-        position: {
-          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-        },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
-        color: COLOR_SCHEME[theme].primary[1]
-      },
-      2: {
-        position: {
-          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-        },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
-        color: COLOR_SCHEME[theme].primary[2]
-      }
-    });
+    clearCanvas(ctx);
     Object.keys(hexagons).forEach((key) => {
       drawHexagon(ctx, hexagons[key]);
 
     })
     drawAxis(ctx);
-    /*setTimeout(() => {
-      setFrameCount(frameCount + 1);
-    }, [1000 / FRAME_RATE]);*/
+    if (animation !== ANIMATIONS[0]) {
+      handleAnimation();
+      setTimeout(() => {
+        setFrameCount(frameCount + 1);
+      }, [1000 / FRAME_RATE]);
+    }
     let animationFrameId;
     const render = () => {
       animationFrameId = window.requestAnimationFrame(render);
@@ -178,11 +259,21 @@ useEffect(() => {
       window.cancelAnimationFrame(animationFrameId);
     };
 
-  }, [theme, frameCount]);
+  }, [theme, animation, frameCount]);
 
 
   return (
     <div id="App">
+      <select
+        value={animation}
+        onChange={(e) => {
+          setAnimation(e.target.value);
+          setAnimationPauseFrame(0);
+        }}>
+        {ANIMATIONS.map((animation) => {
+          return <option key={animation} value={animation}>{animation}</option>
+        })}
+      </select>
       <button onClick={() => {
         if (theme === "light") {
           setTheme("dark");
