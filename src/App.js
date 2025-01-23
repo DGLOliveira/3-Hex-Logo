@@ -93,6 +93,20 @@ useEffect(() => {
 }, [theme]);
 
 
+//Gets user current theme 
+    useEffect(() => {
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? setTheme("dark")
+          : setTheme("light");
+  }, []);
+
+  //Detects user theme change on browser
+
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+    event.matches ? setTheme("dark") : setTheme("light");
+});
+
+//Changes background and hexagon colors on theme change
   useEffect(() => {
     if (theme === "light") {
       document.getElementById("App").style.backgroundColor = "white";
@@ -106,6 +120,7 @@ useEffect(() => {
     })
   }, [theme]);
 
+  //Handles the canvas
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d");
     const canvas = canvasRef.current;
