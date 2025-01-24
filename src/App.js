@@ -22,7 +22,8 @@ const COLOR_SCHEME = {
 const ANIMATIONS = [
   "no animation",
   "spin",
-  "spin & stop"
+  "spin & stop",
+  "converge center"
 ]
 function App() {
   const canvasRef = useRef(null);
@@ -93,6 +94,46 @@ function App() {
     };
   }
 
+  const resetAnimations = () => {
+    setHexagons({
+      0: {
+        position: {
+          x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+          y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        },
+        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+        rotation: Math.PI / 6,
+        color: COLOR_SCHEME[theme].primary[0]
+      },
+      1: {
+        position: {
+          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        },
+        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+        rotation: Math.PI / 6,
+        color: COLOR_SCHEME[theme].primary[1]
+      },
+      2: {
+        position: {
+          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        },
+        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
+        rotation: Math.PI / 6,
+        color: COLOR_SCHEME[theme].primary[2]
+      }
+    });
+    setAxisAngle({
+      0: Math.PI * 5 / 6,
+      1: Math.PI * 2 / 3 + Math.PI * 5 / 6,
+      2: Math.PI * 4 / 3 + Math.PI * 5 / 6
+    });
+    setAnimationFrame(0);
+    setAnimationPauseFrame(0);
+    setFrameCount(0);
+  };
+
   const drawAxis = (ctx) => {
     ctx.lineWidth = (CANVAS_SIZE * 2) / 200;
     ctx.strokeStyle = theme === "light" ? "black" : "white";
@@ -108,9 +149,13 @@ function App() {
     let newHexagons = {};
     let newAxisAngle = {};
     let deltaAngle = Math.PI / 120;
+    let deltaConvergence = 1;
+    let PAUSE_FRAMES = FRAME_RATE / 2;
     switch (animation) {
+      // No Animation
       case ANIMATIONS[0]:
         break;
+      // Spin Animation
       case ANIMATIONS[1]:
         Object.keys(hexagons).forEach((key, index) => {
           newHexagons[key] = {
@@ -129,9 +174,9 @@ function App() {
         setAxisAngle(newAxisAngle);
         setAnimationFrame(animationFrame + 1);
         break;
+      // Spin and Stop Animation
       case ANIMATIONS[2]:
-        let PAUSE_FRAMES = FRAME_RATE / 2;
-        if(0 < animationPauseFrame && animationPauseFrame< PAUSE_FRAMES) {
+        if (0 < animationPauseFrame && animationPauseFrame < PAUSE_FRAMES) {
           setAnimationPauseFrame(animationPauseFrame + 1);
         }
         else if (animationPauseFrame === PAUSE_FRAMES) {
@@ -153,18 +198,35 @@ function App() {
             newAxisAngle[key] = axisAngle[key] - deltaAngle;
           });
           setAxisAngle(newAxisAngle);
+          //Check stop condition, one axis must be pointed upwards
+          //acursed floating point error is solved in a very dirty way
           let roundedCosAxisAngle = Math.round(Math.cos(newAxisAngle[0]) * 100);
           let roundedSinAxisAngle = Math.round(Math.sin(newAxisAngle[0]) * 100);
-          if ((roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 5 / 6) * 100))||
-          (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100)) ||
-          (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100))) {
+          if ((roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 5 / 6) * 100)) ||
+            (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100)) ||
+            (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100))) {
             setAnimationPauseFrame(animationPauseFrame + 1);
             setAnimationFrame(animationFrame + 1);
-          }else {
+          } else {
             setAnimationFrame(animationFrame + 1);
           }
         }
         break;
+      // Convergence Animation
+      case ANIMATIONS[3]:
+        /*Object.keys(hexagons).forEach((key, index) => {
+          newHexagons[key] = {
+            ...hexagons[key],
+            position: {
+              x: CANVAS_SIZE / 2 - deltaConvergence + Math.cos(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
+              y: CANVAS_SIZE / 2 + Math.sin(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+            },
+            rotation: hexagons[key].rotation,
+          };
+        });
+        setHexagons(newHexagons);
+        setAnimationFrame(animationFrame + 1);
+        break;*/
       default:
         break;
     }
@@ -274,6 +336,10 @@ function App() {
           return <option key={animation} value={animation}>{animation}</option>
         })}
       </select>
+      <button onClick={() => {
+        resetAnimations();
+      }}
+      >reset</button>
       <button onClick={() => {
         if (theme === "light") {
           setTheme("dark");
