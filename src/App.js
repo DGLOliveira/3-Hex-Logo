@@ -6,6 +6,7 @@ import './App.css';
 const FRAME_RATE = 120;
 const CANVAS_SIZE = 300;
 const CANVAS_CENTER = CANVAS_SIZE / 2;
+const LINE_WIDTH = CANVAS_SIZE / 100;
 const HEXAGON_SIZE = CANVAS_SIZE / 6;
 const HEXAGON_START_ROTATION = Math.PI / 6;
 const HEXAGON_START_CENTER_DISTANCE = CANVAS_SIZE / 4;
@@ -13,13 +14,13 @@ const HEXAGON_START_ANGULAR_OFFSET = -Math.PI * 5 / 6;
 const COLOR_SCHEME = {
   "light": {
     background: "#FFFFFF",
-    outline: "#000000",
+    outline: "#808080",
     primary: ["#FF00FF", "#00FFFF", "#FFFF00",],
     secondary: ["#FF0000", "#00FF00", "#0000FF"],
   },
   "dark": {
     background: "#000000",
-    outline: "#FFFFFF",
+    outline: "#808080",
     primary: ["#FF0000", "#00FF00", "#0000FF"],
     secondary: ["#FF00FF", "#FFFF00", "#00FFFF"]
   }
@@ -79,8 +80,8 @@ function App() {
   }
 
   const drawHexagon = (ctx, hexagon) => {
-    ctx.lineWidth = (CANVAS_SIZE) / 100;
-    ctx.strokeStyle = hexagon.outline;
+    ctx.lineWidth = LINE_WIDTH;
+    ctx.strokeStyle = COLOR_SCHEME[theme].outline;
     ctx.fillStyle = hexagon.color;
     for (let i = 0; i < 6; i++) {
       if (i === 0) {
@@ -100,8 +101,8 @@ function App() {
   }
 
   const drawAxis = (ctx) => {
-    ctx.lineWidth = (CANVAS_SIZE * 2) / 200;
-    ctx.strokeStyle = theme === "light" ? "black" : "white";
+    ctx.lineWidth = LINE_WIDTH;
+    ctx.strokeStyle = COLOR_SCHEME[theme].outline;
     for (let i = 0; i < 3; i++) {
       ctx.beginPath();
       ctx.moveTo(CANVAS_CENTER, CANVAS_CENTER);
@@ -111,35 +112,18 @@ function App() {
   };
 
   const resetAnimations = () => {
-    setHexagons({
-      0: {
+    Object.keys(hexagons).forEach((key) => {
+      hexagons[key] = {
         position: {
-          x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE,
-          y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE
+          x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+          y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
         },
         size: HEXAGON_SIZE,
         rotation: HEXAGON_START_ROTATION,
-        color: COLOR_SCHEME[theme].primary[0]
-      },
-      1: {
-        position: {
-          x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
-          y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
-        },
-        size: HEXAGON_SIZE,
-        rotation: HEXAGON_START_ROTATION,
-        color: COLOR_SCHEME[theme].primary[1]
-      },
-      2: {
-        position: {
-          x: CANVAS_CENTER + Math.cos(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
-          y: CANVAS_CENTER + Math.sin(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
-        },
-        size: HEXAGON_SIZE,
-        rotation: HEXAGON_START_ROTATION,
-        color: COLOR_SCHEME[theme].primary[2]
-      }
+        color: COLOR_SCHEME[theme].primary[key]
+      };
     });
+    setHexagons(hexagons);
     setAxisAngle({
       0: Math.PI * 5 / 6,
       1: Math.PI * 2 / 3 + Math.PI * 5 / 6,
@@ -190,7 +174,7 @@ function App() {
         }
         else if (animationPauseFrame === 0) {
           Object.keys(hexagons).forEach((key, index) => {
-            newHexagons[key] = {
+            hexagons[key] = {
               ...hexagons[key],
               position: {
                 x: CANVAS_CENTER + Math.cos(index * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET - deltaAngle * animationFrame) * HEXAGON_START_CENTER_DISTANCE,
@@ -199,15 +183,15 @@ function App() {
               rotation: hexagons[key].rotation + deltaAngle,
             };
           });
-          setHexagons(newHexagons);
+          setHexagons(hexagons);
           Object.keys(axisAngle).forEach((key) => {
-            newAxisAngle[key] = axisAngle[key] - deltaAngle;
+            axisAngle[key] = axisAngle[key] - deltaAngle;
           });
-          setAxisAngle(newAxisAngle);
+          setAxisAngle(axisAngle);
           //Check stop condition, one axis must be pointed upwards
           //acursed floating point error is solved in a very dirty way
-          let roundedCosAxisAngle = Math.round(Math.cos(newAxisAngle[0]) * 100);
-          let roundedSinAxisAngle = Math.round(Math.sin(newAxisAngle[0]) * 100);
+          let roundedCosAxisAngle = Math.round(Math.cos(axisAngle[0]) * 100);
+          let roundedSinAxisAngle = Math.round(Math.sin(axisAngle[0]) * 100);
           if ((roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 5 / 6) * 100)) ||
             (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 2 / 3 + Math.PI * 5 / 6) * 100)) ||
             (roundedCosAxisAngle === Math.round(Math.cos(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100) && roundedSinAxisAngle === Math.round(Math.sin(Math.PI * 4 / 3 + Math.PI * 5 / 6) * 100))) {
@@ -241,29 +225,13 @@ function App() {
         }
         else {
           animationState = -1;
-          setHexagons({
-            0: {
-              ...hexagons[0],
-              position: {
-                x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE,
-                y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE
-              }
-            },
-            1: {
-              ...hexagons[1],
-              position: {
-                x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
-                y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
-              }
-            },
-            2: {
-              ...hexagons[2],
-              position: {
-                x: CANVAS_CENTER + Math.cos(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
-                y: CANVAS_CENTER + Math.sin(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
-              }
-            }
+          Object.keys(hexagons).forEach((key) => {
+            hexagons[key].position = {
+              x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+              y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
+            };
           });
+          setHexagons(hexagons);
           setAnimationFrame(0);
         }
         switch (animationState) {
