@@ -5,11 +5,16 @@ import './App.css';
 
 const FRAME_RATE = 120;
 const CANVAS_SIZE = 300;
+const CANVAS_CENTER = CANVAS_SIZE / 2;
+const HEXAGON_SIZE = CANVAS_SIZE / 6;
+const HEXAGON_START_ROTATION = Math.PI / 6;
+const HEXAGON_START_CENTER_DISTANCE = CANVAS_SIZE / 4;
+const HEXAGON_START_ANGULAR_OFFSET = -Math.PI * 5 / 6;
 const COLOR_SCHEME = {
   "light": {
     background: "#FFFFFF",
     outline: "#000000",
-    primary: ["#FF00FF", "#FFFF00", "#00FFFF"],
+    primary: ["#FF00FF", "#00FFFF", "#FFFF00",],
     secondary: ["#FF0000", "#00FF00", "#0000FF"],
   },
   "dark": {
@@ -36,29 +41,29 @@ function App() {
   const [hexagons, setHexagons] = useState({
     0: {
       position: {
-        x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-        y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE,
+        y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE
       },
-      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-      rotation: Math.PI / 6,
+      size: HEXAGON_SIZE,
+      rotation: HEXAGON_START_ROTATION,
       color: COLOR_SCHEME[theme].primary[0]
     },
     1: {
       position: {
-        x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-        y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+        y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
       },
-      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-      rotation: Math.PI / 6,
+      size: HEXAGON_SIZE,
+      rotation: HEXAGON_START_ROTATION,
       color: COLOR_SCHEME[theme].primary[1]
     },
     2: {
       position: {
-        x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-        y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+        x: CANVAS_CENTER + Math.cos(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+        y: CANVAS_CENTER + Math.sin(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
       },
-      size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-      rotation: Math.PI / 6,
+      size: HEXAGON_SIZE,
+      rotation: HEXAGON_START_ROTATION,
       color: COLOR_SCHEME[theme].primary[2]
     }
   });
@@ -99,39 +104,39 @@ function App() {
     ctx.strokeStyle = theme === "light" ? "black" : "white";
     for (let i = 0; i < 3; i++) {
       ctx.beginPath();
-      ctx.moveTo(CANVAS_SIZE / 2, CANVAS_SIZE / 2);
-      ctx.lineTo(CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.cos(axisAngle[i]), CANVAS_SIZE / 2 + (CANVAS_SIZE / 3) * Math.sin(axisAngle[i]));
+      ctx.moveTo(CANVAS_CENTER, CANVAS_CENTER);
+      ctx.lineTo(CANVAS_CENTER + (CANVAS_SIZE / 3) * Math.cos(axisAngle[i]), CANVAS_CENTER + (CANVAS_SIZE / 3) * Math.sin(axisAngle[i]));
       ctx.stroke();
     }
   };
-  
+
   const resetAnimations = () => {
     setHexagons({
       0: {
         position: {
-          x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+          x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE,
+          y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE
         },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
+        size: HEXAGON_SIZE,
+        rotation: HEXAGON_START_ROTATION,
         color: COLOR_SCHEME[theme].primary[0]
       },
       1: {
         position: {
-          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+          x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+          y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
         },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
+        size: HEXAGON_SIZE,
+        rotation: HEXAGON_START_ROTATION,
         color: COLOR_SCHEME[theme].primary[1]
       },
       2: {
         position: {
-          x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-          y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+          x: CANVAS_CENTER + Math.cos(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+          y: CANVAS_CENTER + Math.sin(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
         },
-        size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-        rotation: Math.PI / 6,
+        size: HEXAGON_SIZE,
+        rotation: HEXAGON_START_ROTATION,
         color: COLOR_SCHEME[theme].primary[2]
       }
     });
@@ -162,8 +167,8 @@ function App() {
           newHexagons[key] = {
             ...hexagons[key],
             position: {
-              x: CANVAS_SIZE / 2 + Math.cos(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-              y: CANVAS_SIZE / 2 + Math.sin(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+              x: CANVAS_CENTER + Math.cos(index * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET - deltaAngle * animationFrame) * HEXAGON_START_CENTER_DISTANCE,
+              y: CANVAS_CENTER + Math.sin(index * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET - deltaAngle * animationFrame) * HEXAGON_START_CENTER_DISTANCE
             },
             rotation: hexagons[key].rotation + deltaAngle,
           };
@@ -188,8 +193,8 @@ function App() {
             newHexagons[key] = {
               ...hexagons[key],
               position: {
-                x: CANVAS_SIZE / 2 + Math.cos(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-                y: CANVAS_SIZE / 2 + Math.sin(index * Math.PI * 2 / 3 - Math.PI * 5 / 6 - deltaAngle * animationFrame) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
+                x: CANVAS_CENTER + Math.cos(index * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET - deltaAngle * animationFrame) * HEXAGON_START_CENTER_DISTANCE,
+                y: CANVAS_CENTER + Math.sin(index * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET - deltaAngle * animationFrame) * HEXAGON_START_CENTER_DISTANCE
               },
               rotation: hexagons[key].rotation + deltaAngle,
             };
@@ -238,32 +243,27 @@ function App() {
           animationState = -1;
           setHexagons({
             0: {
+              ...hexagons[0],
               position: {
-                x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-                y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-              },
-              size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-              rotation: Math.PI / 6,
-              color: COLOR_SCHEME[theme].primary[0]
+                x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE,
+                y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * HEXAGON_START_CENTER_DISTANCE
+              }
             },
             1: {
+              ...hexagons[1],
               position: {
-                x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-                y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-              },
-              size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-              rotation: Math.PI / 6,
-              color: COLOR_SCHEME[theme].primary[1]
+                x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+                y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
+              }
             },
             2: {
+              ...hexagons[2],
               position: {
-                x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2),
-                y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 4 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE + CANVAS_SIZE) / (4 * 2)
-              },
-              size: (CANVAS_SIZE + CANVAS_SIZE) / (4 * 3),
-              rotation: Math.PI / 6,
-              color: COLOR_SCHEME[theme].primary[2]
-            }});
+                x: CANVAS_CENTER + Math.cos(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
+                y: CANVAS_CENTER + Math.sin(Math.PI * 4 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
+              }
+            }
+          });
           setAnimationFrame(0);
         }
         switch (animationState) {
@@ -273,8 +273,8 @@ function App() {
           case 1:
             newHexagons = hexagons;
             hexagons[0].position = {
-              x: CANVAS_SIZE / 2 + Math.cos(-Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * animationFrame),
-              y: CANVAS_SIZE / 2 + Math.sin(-Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * animationFrame)
+              x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * animationFrame),
+              y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * animationFrame)
             };
             setHexagons(newHexagons);
             setAnimationFrame(animationFrame + 1);
@@ -282,8 +282,8 @@ function App() {
           case 2:
             newHexagons = hexagons;
             hexagons[1].position = {
-              x: CANVAS_SIZE / 2 + Math.cos(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * (animationFrame - 2 * FRAME_RATE)),
-              y: CANVAS_SIZE / 2 + Math.sin(Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * (animationFrame - 2 * FRAME_RATE))
+              x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 2 * FRAME_RATE)),
+              y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 2 * FRAME_RATE))
             };
             setHexagons(newHexagons);
             setAnimationFrame(animationFrame + 1);
@@ -291,8 +291,8 @@ function App() {
           case 3:
             newHexagons = hexagons;
             hexagons[2].position = {
-              x: CANVAS_SIZE / 2 + Math.cos(2*Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * (animationFrame - 4 * FRAME_RATE)),
-              y: CANVAS_SIZE / 2 + Math.sin(2*Math.PI * 2 / 3 - Math.PI * 5 / 6) * (CANVAS_SIZE/ 4 - deltaConvergence * (animationFrame - 4 * FRAME_RATE))
+              x: CANVAS_CENTER + Math.cos(2 * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 4 * FRAME_RATE)),
+              y: CANVAS_CENTER + Math.sin(2 * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 4 * FRAME_RATE))
             };
             setHexagons(newHexagons);
             setAnimationFrame(animationFrame + 1);
@@ -364,10 +364,10 @@ function App() {
   useEffect(() => {
     const ctx = canvasRef.current.getContext("2d");
     const canvas = canvasRef.current;
-    if(theme === "light"){
+    if (theme === "light") {
       ctx.globalCompositeOperation = "darken";
     }
-    else{
+    else {
       ctx.globalCompositeOperation = "lighten";
     }
     //console.log(canvas);
