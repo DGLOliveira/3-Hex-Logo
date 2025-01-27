@@ -51,6 +51,30 @@ export default function Canvas({ theme, animation, ANIMATIONS, COLOR_SCHEME }) {
     2: Math.PI * 4 / 3 + Math.PI * 5 / 6
   });
 
+    let props ={ 
+      axisAngle, 
+      setAxisAngle, 
+      hexagons,
+      setHexagons, 
+      animation, 
+      ANIMATIONS, 
+      COLOR_SCHEME, 
+      theme, 
+      CANVAS_SIZE, 
+      CANVAS_CENTER, 
+      LINE_WIDTH,
+      HEXAGON_SIZE,
+      HEXAGON_START_ROTATION,
+      HEXAGON_START_CENTER_DISTANCE,
+      HEXAGON_START_ANGULAR_OFFSET,
+      animationFrame, 
+      setAnimationFrame, 
+      animationPauseFrame, 
+      setAnimationPauseFrame, 
+      FRAME_RATE,
+      frameCount, 
+      setFrameCount, 
+    };
 
   //Download the image
   const saveFile = (ctx) => {
@@ -84,30 +108,6 @@ export default function Canvas({ theme, animation, ANIMATIONS, COLOR_SCHEME }) {
     else {
       ctx.globalCompositeOperation = "lighten";
     }
-    let props ={ 
-      axisAngle, 
-      setAxisAngle, 
-      hexagons,
-      setHexagons, 
-      animation, 
-      ANIMATIONS, 
-      COLOR_SCHEME, 
-      theme, 
-      CANVAS_SIZE, 
-      CANVAS_CENTER, 
-      LINE_WIDTH,
-      HEXAGON_SIZE,
-      HEXAGON_START_ROTATION,
-      HEXAGON_START_CENTER_DISTANCE,
-      HEXAGON_START_ANGULAR_OFFSET,
-      animationFrame, 
-      setAnimationFrame, 
-      animationPauseFrame, 
-      setAnimationPauseFrame, 
-      FRAME_RATE,
-      frameCount, 
-      setFrameCount, 
-    };
     clearCanvas(ctx, CANVAS_SIZE);
     Object.keys(hexagons).forEach((key) => {
       drawHexagon(ctx, hexagons[key], props);
@@ -132,10 +132,7 @@ export default function Canvas({ theme, animation, ANIMATIONS, COLOR_SCHEME }) {
 
     return(<>
         <button onClick={() => {
-          resetAnimations(theme, hexagons, setHexagons, setAxisAngle, 
-            setAnimationFrame, setAnimationPauseFrame, setFrameCount, 
-            CANVAS_CENTER, HEXAGON_START_ANGULAR_OFFSET, HEXAGON_START_CENTER_DISTANCE, 
-            HEXAGON_SIZE, HEXAGON_START_ROTATION, COLOR_SCHEME);
+          resetAnimations(props);
         }}
         >reset</button>
         <button onClick={() => {
