@@ -26,12 +26,12 @@ const COLOR_SCHEME = {
   }
 }
 const ANIMATIONS = [
-  "no animation",
-  "spin",
-  "spin & stop",
-  "center one by one",
-  "center simultaneous",
-  "center in and out simultaneous"
+  "No Animation",
+  "Spin",
+  "Spin & Stop",
+  "Center In one by one",
+  "Center In simultaneous",
+  "Center In&Out simultaneous"
 ]
 function App() {
   const canvasRef = useRef(null);
