@@ -29,7 +29,8 @@ const ANIMATIONS = [
   "no animation",
   "spin",
   "spin & stop",
-  "converge center"
+  "center one by one",
+  "center simultaneous",
 ]
 function App() {
   const canvasRef = useRef(null);
@@ -268,6 +269,38 @@ function App() {
           default:
             break;
         }
+        break;
+      // Convergence Simultaneous Animation
+      case ANIMATIONS[4]:
+        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > CANVAS_SIZE/15){
+        Object.keys(hexagons).forEach((key) => {
+          hexagons[key].position = {
+            x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame),
+            y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame)
+          };
+        });
+        setHexagons(hexagons);
+        setAnimationFrame(animationFrame + 1);
+      }
+      else if(animationFrame < 4*FRAME_RATE){
+        setAnimationFrame(animationFrame + 1);
+      }
+      else if(CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE) < HEXAGON_START_CENTER_DISTANCE){
+        Object.keys(hexagons).forEach((key) => {
+          hexagons[key].position = {
+            x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE)),
+            y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE))
+          };
+        });
+        setHexagons(hexagons);
+        setAnimationFrame(animationFrame + 1);
+      }
+      else{
+        setAnimationFrame(0);
+      }
+        break;
+      default:
+        break;
     }
   };
 
@@ -403,6 +436,8 @@ function App() {
         saveFile(canvasRef.current.getContext("2d"));
       }}
       >save</button>
+      <div
+      style={{color: theme==="light" ? "black" : "white" }}>Frames:{animationFrame}</div>
       <canvas
         ref={canvasRef}
         id="canvas"
