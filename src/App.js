@@ -31,6 +31,7 @@ const ANIMATIONS = [
   "spin & stop",
   "center one by one",
   "center simultaneous",
+  "center in and out simultaneous"
 ]
 function App() {
   const canvasRef = useRef(null);
@@ -270,8 +271,27 @@ function App() {
             break;
         }
         break;
-      // Convergence Simultaneous Animation
+      //Center in Simultaneous Animation
       case ANIMATIONS[4]:
+        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > CANVAS_SIZE/15){
+        Object.keys(hexagons).forEach((key) => {
+          hexagons[key].position = {
+            x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame),
+            y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame)
+          };
+        });
+        setHexagons(hexagons);
+        setAnimationFrame(animationFrame + 1);
+      }
+      else if(animationFrame < 4*FRAME_RATE){
+        setAnimationFrame(animationFrame + 1);
+      }
+      else{
+        setAnimationFrame(0);
+      }
+        break;
+        // Center in and out Simultaneous Animation
+      case ANIMATIONS[5]:
         if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > CANVAS_SIZE/15){
         Object.keys(hexagons).forEach((key) => {
           hexagons[key].position = {
