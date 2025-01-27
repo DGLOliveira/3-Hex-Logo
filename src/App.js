@@ -142,6 +142,7 @@ function App() {
     let newAxisAngle = {};
     let deltaAngle = Math.PI / 120;
     let deltaConvergence = CANVAS_SIZE / 720;
+    let convergenceTarget = CANVAS_SIZE / 12;
     let PAUSE_FRAMES = FRAME_RATE / 2;
     switch (animation) {
       // No Animation
@@ -204,76 +205,54 @@ function App() {
           }
         }
         break;
-      // Convergence Animation
+      // Convergence One by One Animation
       case ANIMATIONS[3]:
-        let animationState = 0;
-        if (animationFrame <= FRAME_RATE) {
-          animationState = 1;
+        let convergenceTime = Math.abs(Math.round((convergenceTarget-HEXAGON_START_CENTER_DISTANCE)/deltaConvergence));
+        let targetHexagon = 0;
+        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > convergenceTarget){
+          hexagons[targetHexagon] = {
+            ...hexagons[targetHexagon],
+            position:{
+              x: CANVAS_CENTER + Math.cos(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame),
+              y: CANVAS_CENTER + Math.sin(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame)
+            }
+          };
+          setAnimationFrame(animationFrame + 1);
         }
-        else if (animationFrame <= 2 * FRAME_RATE) {
-          animationState = 0;
+        else if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame <= convergenceTarget && animationPauseFrame< PAUSE_FRAMES){
+          setAnimationPauseFrame(animationPauseFrame + 1);
         }
-        else if (animationFrame <= 3 * FRAME_RATE) {
-          animationState = 2;
-        }
-        else if (animationFrame <= 4 * FRAME_RATE) {
-          animationState = 0;
-        }
-        else if (animationFrame <= 5 * FRAME_RATE) {
-          animationState = 3;
-        }
-        else if (animationFrame <= 6 * FRAME_RATE) {
-          animationState = 0;
-        }
-        else {
-          animationState = -1;
-          Object.keys(hexagons).forEach((key) => {
-            hexagons[key].position = {
-              x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE,
-              y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * HEXAGON_START_CENTER_DISTANCE
-            };
-          });
-          setHexagons(hexagons);
-          setAnimationFrame(0);
-        }
-        switch (animationState) {
-          case 0:
-            setAnimationFrame(animationFrame + 1);
-            break;
-          case 1:
-            newHexagons = hexagons;
-            hexagons[0].position = {
-              x: CANVAS_CENTER + Math.cos(-Math.PI * 5 / 6) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * animationFrame),
-              y: CANVAS_CENTER + Math.sin(-Math.PI * 5 / 6) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * animationFrame)
-            };
-            setHexagons(newHexagons);
-            setAnimationFrame(animationFrame + 1);
-            break;
-          case 2:
-            newHexagons = hexagons;
-            hexagons[1].position = {
-              x: CANVAS_CENTER + Math.cos(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 2 * FRAME_RATE)),
-              y: CANVAS_CENTER + Math.sin(Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 2 * FRAME_RATE))
-            };
-            setHexagons(newHexagons);
-            setAnimationFrame(animationFrame + 1);
-            break;
-          case 3:
-            newHexagons = hexagons;
-            hexagons[2].position = {
-              x: CANVAS_CENTER + Math.cos(2 * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 4 * FRAME_RATE)),
-              y: CANVAS_CENTER + Math.sin(2 * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE - deltaConvergence * (animationFrame - 4 * FRAME_RATE))
-            };
-            setHexagons(newHexagons);
-            setAnimationFrame(animationFrame + 1);
-            break;
-          default:
-            break;
+        else if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime) > convergenceTarget){
+          targetHexagon = 1;
+          hexagons[targetHexagon] = {
+            ...hexagons[targetHexagon],
+            position:{
+              x: CANVAS_CENTER + Math.cos(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime)),
+              y: CANVAS_CENTER + Math.sin(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime))
+            }
+          };
+          setAnimationFrame(animationFrame + 1);
+        }else if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime) <= convergenceTarget && animationPauseFrame< 2*PAUSE_FRAMES){
+          setAnimationPauseFrame(animationPauseFrame + 1);
+        }else if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime*2) > convergenceTarget){
+          targetHexagon = 2;
+          hexagons[targetHexagon] = {
+            ...hexagons[targetHexagon],
+            position:{
+              x: CANVAS_CENTER + Math.cos(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime*2)),
+              y: CANVAS_CENTER + Math.sin(targetHexagon * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime*2))
+            }
+          };
+          setAnimationFrame(animationFrame + 1);
+        }else if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*(animationFrame-convergenceTime*2) <= convergenceTarget && animationPauseFrame< 3*PAUSE_FRAMES){
+          setAnimationPauseFrame(animationPauseFrame + 1);
+        }else{
+          resetAnimations();
         }
         break;
       //Center in Simultaneous Animation
       case ANIMATIONS[4]:
-        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > CANVAS_SIZE/15){
+        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > convergenceTarget){
         Object.keys(hexagons).forEach((key) => {
           hexagons[key].position = {
             x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame),
@@ -292,7 +271,7 @@ function App() {
         break;
         // Center in and out Simultaneous Animation
       case ANIMATIONS[5]:
-        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > CANVAS_SIZE/15){
+        if(HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame > convergenceTarget){
         Object.keys(hexagons).forEach((key) => {
           hexagons[key].position = {
             x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (HEXAGON_START_CENTER_DISTANCE-deltaConvergence*animationFrame),
@@ -305,11 +284,11 @@ function App() {
       else if(animationFrame < 4*FRAME_RATE){
         setAnimationFrame(animationFrame + 1);
       }
-      else if(CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE) < HEXAGON_START_CENTER_DISTANCE){
+      else if(convergenceTarget+deltaConvergence*(animationFrame-4*FRAME_RATE) < HEXAGON_START_CENTER_DISTANCE){
         Object.keys(hexagons).forEach((key) => {
           hexagons[key].position = {
-            x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE)),
-            y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (CANVAS_SIZE/15+deltaConvergence*(animationFrame-4*FRAME_RATE))
+            x: CANVAS_CENTER + Math.cos(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (convergenceTarget+deltaConvergence*(animationFrame-4*FRAME_RATE)),
+            y: CANVAS_CENTER + Math.sin(key * Math.PI * 2 / 3 + HEXAGON_START_ANGULAR_OFFSET) * (convergenceTarget+deltaConvergence*(animationFrame-4*FRAME_RATE))
           };
         });
         setHexagons(hexagons);
@@ -457,7 +436,11 @@ function App() {
       }}
       >save</button>
       <div
-      style={{color: theme==="light" ? "black" : "white" }}>Frames:{animationFrame}</div>
+      style={{color: theme==="light" ? "black" : "white" }}>
+        {"Active Frames: "}{animationFrame}
+        <br/>
+        {"Pause Frames:" }{animationPauseFrame}
+        </div>
       <canvas
         ref={canvasRef}
         id="canvas"
