@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Canvas from './Canvas/canvas.js';
+import SVG from './SVG/display.js';
 import faviconDark from './Assets/faviconDark.ico';
 import faviconLight from './Assets/faviconLight.ico';
 import './App.css';
@@ -88,7 +89,7 @@ function App() {
       </select>
       <button onClick={() => {
         if (type === "canvas") {
-          setType("css");
+          setType("svg");
         } else {
           setType("canvas");
         }
@@ -99,7 +100,12 @@ function App() {
           animation={animation}
           ANIMATIONS={ANIMATIONS}
           COLOR_SCHEME={COLOR_SCHEME}
-        /> : null}
+        /> : 
+        <SVG 
+        theme={theme}
+        animation={animation}
+        ANIMATIONS={ANIMATIONS}
+        COLOR_SCHEME={COLOR_SCHEME} />}
     </div>
   );
 }
