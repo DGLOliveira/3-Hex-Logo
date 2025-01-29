@@ -1,4 +1,3 @@
-
 /* Spin Animation */
 
 .spin {
@@ -17,6 +16,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(-360deg);
     }
@@ -26,6 +26,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -48,21 +49,27 @@
     0% {
         transform: rotate(0deg);
     }
-    16.66666666666667%{
+
+    16.66666666666667% {
         transform: rotate(-120deg);
     }
+
     33.33333333333333% {
         transform: rotate(-120deg);
     }
+
     50% {
         transform: rotate(-240deg);
     }
+
     66.66666666666667% {
         transform: rotate(-240deg);
     }
+
     83.33333333333333% {
         transform: rotate(-360deg);
     }
+
     100% {
         transform: rotate(-360deg);
     }
@@ -73,33 +80,41 @@
     0% {
         transform: rotate(0deg);
     }
-    16.66666666666667%{
+
+    16.66666666666667% {
         transform: rotate(240deg);
     }
+
     33.33333333333333% {
         transform: rotate(240deg);
     }
+
     50% {
         transform: rotate(480deg);
     }
+
     66.66666666666667% {
         transform: rotate(480deg);
     }
+
     83.33333333333333% {
         transform: rotate(720deg);
     }
+
     100% {
         transform: rotate(720deg);
     }
 }
 
-.center-in-one-by-one > .hex1{
+.center-in-one-by-one>.hex1 {
     animation: center-in-one-by-one-hex 6s linear infinite;
 }
-.center-in-one-by-one > .hex2{
+
+.center-in-one-by-one>.hex2 {
     animation: center-in-one-by-one-hex-2 6s linear infinite;
 }
-.center-in-one-by-one > .hex3{
+
+.center-in-one-by-one>.hex3 {
     animation: center-in-one-by-one-hex-3 6s linear infinite;
 }
 
@@ -107,23 +122,77 @@
     0% {
         transform: translate(0, 0);
     }
-    16.66666666666667%, 100% {
+
+    16.66666666666667%,
+    100% {
         transform: translate(12.5%, 8%);
     }
 }
+
 @keyframes center-in-one-by-one-hex-2 {
-    0%, 33.33333333333333% {
+
+    0%,
+    33.33333333333333% {
         transform: translate(0, 0);
     }
+
+    50%,
+    100% {
+        transform: translate(-12.5%, 8%);
+    }
+}
+
+@keyframes center-in-one-by-one-hex-3 {
+
+    0%,
+    66.66666666666667% {
+        transform: translate(0, 0);
+    }
+
+    83.33333333333333%,
+    100% {
+        transform: translate(0, -12.5%);
+    }
+}
+
+.center-in-simultaneous>.hex1 {
+    animation: center-in-simultaneous-hex1 4s linear infinite;
+}
+
+.center-in-simultaneous>.hex2 {
+    animation: center-in-simultaneous-hex2 4s linear infinite;
+}
+
+.center-in-simultaneous>.hex3 {
+    animation: center-in-simultaneous-hex3 4s linear infinite;
+}
+
+@keyframes center-in-simultaneous-hex1 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50%, 100% {
+        transform: translate(12.5%, 8%);
+    }
+}
+
+@keyframes center-in-simultaneous-hex2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
     50%, 100% {
         transform: translate(-12.5%, 8%);
     }
 }
-@keyframes center-in-one-by-one-hex-3 {
-    0%, 66.66666666666667% {
+
+@keyframes center-in-simultaneous-hex3 {
+    0% {
         transform: translate(0, 0);
     }
-    83.33333333333333%, 100% {
+
+    50%, 100% {
         transform: translate(0, -12.5%);
     }
 }
