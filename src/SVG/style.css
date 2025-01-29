@@ -93,10 +93,6 @@
     }
 }
 
-.center-in-one-by-one{
-    
-}
-
 .center-in-one-by-one > .hex1{
     animation: center-in-one-by-one-hex 6s linear infinite;
 }
