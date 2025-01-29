@@ -1,3 +1,6 @@
+
+/* Spin Animation */
+
 .spin {
     transform-box: fill-box;
     transform-origin: center;
@@ -7,15 +10,9 @@
 .spin>.hex {
     transform-box: fill-box;
     transform-origin: center;
-    animation: spinHex 2s linear infinite;
+    animation: spin-hex 2s linear infinite;
 }
 
-/*.spin>.axis {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: spinAxis 10s linear infinite;
-}
-*/
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -25,11 +22,73 @@
     }
 }
 
-@keyframes spinHex {
+@keyframes spin-hex {
     from {
         transform: rotate(0deg);
     }
     to {
         transform: rotate(360deg);
+    }
+}
+
+/* Spin & Stop Animation */
+.spin-stop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin-stop 7s linear infinite;
+}
+
+.spin-stop>.hex {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin-stop-hex 7s linear infinite;
+}
+
+@keyframes spin-stop {
+    0% {
+        transform: rotate(0deg);
+    }
+    16.66666666666667%{
+        transform: rotate(-120deg);
+    }
+    33.33333333333333% {
+        transform: rotate(-120deg);
+    }
+    50% {
+        transform: rotate(-240deg);
+    }
+    66.66666666666667% {
+        transform: rotate(-240deg);
+    }
+    83.33333333333333% {
+        transform: rotate(-360deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+
+@keyframes spin-stop-hex {
+    0% {
+        transform: rotate(0deg);
+    }
+    16.66666666666667%{
+        transform: rotate(240deg);
+    }
+    33.33333333333333% {
+        transform: rotate(240deg);
+    }
+    50% {
+        transform: rotate(480deg);
+    }
+    66.66666666666667% {
+        transform: rotate(480deg);
+    }
+    83.33333333333333% {
+        transform: rotate(720deg);
+    }
+    100% {
+        transform: rotate(720deg);
     }
 }
