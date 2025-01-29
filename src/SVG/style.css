@@ -92,3 +92,42 @@
         transform: rotate(720deg);
     }
 }
+
+.center-in-one-by-one{
+    
+}
+
+.center-in-one-by-one > .hex1{
+    animation: center-in-one-by-one-hex 6s linear infinite;
+}
+.center-in-one-by-one > .hex2{
+    animation: center-in-one-by-one-hex-2 6s linear infinite;
+}
+.center-in-one-by-one > .hex3{
+    animation: center-in-one-by-one-hex-3 6s linear infinite;
+}
+
+@keyframes center-in-one-by-one-hex {
+    0% {
+        transform: translate(0, 0);
+    }
+    16.66666666666667%, 100% {
+        transform: translate(12.5%, 8%);
+    }
+}
+@keyframes center-in-one-by-one-hex-2 {
+    0%, 33.33333333333333% {
+        transform: translate(0, 0);
+    }
+    50%, 100% {
+        transform: translate(-12.5%, 8%);
+    }
+}
+@keyframes center-in-one-by-one-hex-3 {
+    0%, 66.66666666666667% {
+        transform: translate(0, 0);
+    }
+    83.33333333333333%, 100% {
+        transform: translate(0, -12.5%);
+    }
+}
