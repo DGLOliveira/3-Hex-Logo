@@ -26,6 +26,7 @@ const ANIMATIONS = [
   "Center In&Out simultaneous",
   "Center In&Out one by one",
   "Center In rotate",
+  "Combined Animation"
 ]
 function App() {
   const [theme, setTheme] = useState("light");

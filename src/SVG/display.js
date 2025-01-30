@@ -24,6 +24,8 @@ export default function SVG({
             setKeyframe("center-in-out-one-by-one");
         } else if (animation === ANIMATIONS[7]) {
             setKeyframe("center-in-rotate");
+        } else if (animation === ANIMATIONS[8]) {
+            setKeyframe("combined-animation");
         }
 
         else {

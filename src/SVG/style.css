@@ -373,3 +373,199 @@
         transform: translate(0, -45%) rotate(30deg);
     }
 }
+
+.combined-animation{
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: combined-animation 22.5s linear infinite;
+}
+
+.combined-animation>.hex1 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: combined-animation-hex1 22.5s linear infinite;
+}
+
+.combined-animation>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: combined-animation-hex2 22.5s linear infinite;
+}
+
+.combined-animation>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: combined-animation-hex3 22.5s linear infinite;
+}
+    
+@keyframes combined-animation {
+    0%, 28.888888888888889% {
+        transform: rotate(0deg);
+    }
+    33.33333333333333%, 62.22222222222222% {
+        transform: rotate(-120deg);
+    }
+    66.66666666666667%, 95.55555555555555% {
+        transform: rotate(-240deg);
+    }
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+@keyframes combined-animation-hex1 {
+    0%, 2.22222222222222222% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    6.66666666666666667%, 8.8888888888888889% {
+        transform: translate(45%, 23%) rotate(0deg);
+    }
+    13.3333333333333333%, 15.5555555555555555% {
+        transform: translate(45%, 23%) rotate(30deg);
+    }
+    20%, 22.222222222222222% {
+        transform: translate(45%, 23%) rotate(60deg);
+    }
+    26.66666666666667%, 28.888888888888889%{
+        transform: translate(0%, 0%) rotate(60deg);
+    }
+    33.33333333333333%, 35.55555555555555%{
+        transform: translate(0%, 0%) rotate(300deg);
+    }
+    40%, 42.222222222222222%{
+        transform: translate(45%, 23%) rotate(300deg);
+    }
+    46.66666666666667%, 48.888888888888889%{
+        transform: translate(45%, 23%) rotate(330deg);
+    }
+    53.33333333333333%, 55.55555555555555%{
+        transform: translate(45%, 23%) rotate(360deg);
+    }
+    60%, 62.22222222222222% {
+        transform: translate(0%, 0%) rotate(360deg);
+    }
+    66.66666666666667%, 68.888888888888889% {
+        transform: translate(0%, 0%) rotate(600deg);
+    }
+    73.33333333333333%, 75.55555555555555% {
+        transform: translate(45%, 23%) rotate(600deg);
+    }
+    80%, 82.22222222222222% {
+        transform: translate(45%, 23%) rotate(630deg);
+    }
+    86.66666666666667%, 88.888888888888889% {
+        transform: translate(45%, 23%) rotate(660deg);
+    }
+    93.33333333333333%, 95.55555555555555% {
+        transform: translate(0%, 0%) rotate(660deg);
+    }
+    100% {
+        transform: translate(0%, 0%) rotate(900deg);
+    }
+    /*wait for whole svg to rotate for 1 second*/
+}
+
+@keyframes combined-animation-hex2 {
+    0%, 2.22222222222222222% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    6.66666666666666667%, 8.8888888888888889% {
+        transform: translate(-45%, 23%) rotate(0deg);
+    }
+    13.3333333333333333%, 15.5555555555555555% {
+        transform: translate(-45%, 23%) rotate(30deg);
+    }
+    20%, 22.222222222222222% {
+        transform: translate(-45%, 23%) rotate(60deg);
+    }
+    26.66666666666667%, 28.888888888888889%{
+        transform: translate(0%, 0%) rotate(60deg);
+    }
+    33.33333333333333%, 35.55555555555555%{
+        transform: translate(0%, 0%) rotate(300deg);
+    }
+    40%, 42.222222222222222%{
+        transform: translate(-45%, 23%) rotate(300deg);
+    }
+    46.66666666666667%, 48.888888888888889%{
+        transform: translate(-45%, 23%) rotate(330deg);
+    }
+    53.33333333333333%, 55.55555555555555%{
+        transform: translate(-45%, 23%) rotate(360deg);
+    }
+    60%, 62.22222222222222% {
+        transform: translate(0%, 0%) rotate(360deg);
+    }
+    66.66666666666667%, 68.888888888888889% {
+        transform: translate(0%, 0%) rotate(600deg);
+    }
+    73.33333333333333%, 75.55555555555555% {
+        transform: translate(-45%, 23%) rotate(600deg);
+    }
+    80%, 82.22222222222222% {
+        transform: translate(-45%, 23%) rotate(630deg);
+    }
+    86.66666666666667%, 88.888888888888889% {
+        transform: translate(-45%, 23%) rotate(660deg);
+    }
+    93.33333333333333%, 95.55555555555555% {
+        transform: translate(0%, 0%) rotate(660deg);
+    }
+    100% {
+        transform: translate(0%, 0%) rotate(900deg);
+    }
+    /*wait for whole svg to rotate for 1 second*/
+}
+
+
+@keyframes combined-animation-hex3 {
+    0%, 2.22222222222222222% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    6.66666666666666667%, 8.8888888888888889% {
+        transform: translate(0, -45%) rotate(0deg);
+    }
+    13.3333333333333333%, 15.5555555555555555% {
+        transform: translate(0, -45%) rotate(30deg);
+    }
+    20%, 22.222222222222222% {
+        transform: translate(0, -45%) rotate(60deg);
+    }
+    26.66666666666667%, 28.888888888888889%{
+        transform: translate(0%, 0%) rotate(60deg);
+    }
+    33.33333333333333%, 35.55555555555555%{
+        transform: translate(0%, 0%) rotate(300deg);
+    }
+    40%, 42.222222222222222%{
+        transform: translate(0, -45%) rotate(300deg);
+    }
+    46.66666666666667%, 48.888888888888889%{
+        transform: translate(0, -45%) rotate(330deg);
+    }
+    53.33333333333333%, 55.55555555555555%{
+        transform: translate(0, -45%) rotate(360deg);
+    }
+    60%, 62.22222222222222% {
+        transform: translate(0%, 0%) rotate(360deg);
+    }
+    66.66666666666667%, 68.888888888888889% {
+        transform: translate(0%, 0%) rotate(600deg);
+    }
+    73.33333333333333%, 75.55555555555555% {
+        transform: translate(0, -45%) rotate(600deg);
+    }
+    80%, 82.22222222222222% {
+        transform: translate(0, -45%) rotate(630deg);
+    }
+    86.66666666666667%, 88.888888888888889% {
+        transform: translate(0, -45%) rotate(660deg);
+    }
+    93.33333333333333%, 95.55555555555555% {
+        transform: translate(0%, 0%) rotate(660deg);
+    }
+    100% {
+        transform: translate(0%, 0%) rotate(900deg);
+    }
+    /*wait for whole svg to rotate for 1 second*/
+}
