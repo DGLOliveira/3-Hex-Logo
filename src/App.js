@@ -23,7 +23,8 @@ const ANIMATIONS = [
   "Spin & Stop",
   "Center In one by one",
   "Center In simultaneous",
-  "Center In&Out simultaneous"
+  "Center In&Out simultaneous",
+  "Center In&Out one by one",
 ]
 function App() {
   const [theme, setTheme] = useState("light");

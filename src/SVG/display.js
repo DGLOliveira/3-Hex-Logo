@@ -20,7 +20,11 @@ export default function SVG({
             setKeyframe("center-in-simultaneous");
         } else if (animation === ANIMATIONS[5]) {
             setKeyframe("center-in-out-simultaneous");
-        } else {
+        } else if (animation === ANIMATIONS[6]) {
+            setKeyframe("center-in-out-one-by-one");
+        }
+        
+        else {
             setKeyframe("");
         }
     }, [animation]);
