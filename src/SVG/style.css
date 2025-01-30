@@ -107,14 +107,20 @@
 }
 
 .center-in-one-by-one>.hex1 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-one-by-one-hex 6s linear infinite;
 }
 
 .center-in-one-by-one>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-one-by-one-hex-2 6s linear infinite;
 }
 
 .center-in-one-by-one>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-one-by-one-hex-3 6s linear infinite;
 }
 
@@ -125,7 +131,7 @@
 
     16.66666666666667%,
     100% {
-        transform: translate(12.5%, 8%);
+        transform: translate(45%, 23%);
     }
 }
 
@@ -138,7 +144,7 @@
 
     50%,
     100% {
-        transform: translate(-12.5%, 8%);
+        transform: translate(-45%, 23%);
     }
 }
 
@@ -151,19 +157,25 @@
 
     83.33333333333333%,
     100% {
-        transform: translate(0, -12.5%);
+        transform: translate(0, -45%);
     }
 }
 
 .center-in-simultaneous>.hex1 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-simultaneous-hex1 4s linear infinite;
 }
 
 .center-in-simultaneous>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-simultaneous-hex2 4s linear infinite;
 }
 
 .center-in-simultaneous>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-simultaneous-hex3 4s linear infinite;
 }
 
@@ -173,7 +185,7 @@
     }
 
     50%, 100% {
-        transform: translate(12.5%, 8%);
+        transform: translate(45%, 23%);
     }
 }
 
@@ -183,7 +195,7 @@
     }
 
     50%, 100% {
-        transform: translate(-12.5%, 8%);
+        transform: translate(-45%, 23%);
     }
 }
 
@@ -193,19 +205,25 @@
     }
 
     50%, 100% {
-        transform: translate(0, -12.5%);
+        transform: translate(0, -45%);
     }
 }
 
-.center-in-out-simultaneous>.hex1 {
+.center-in-out-simultaneous>.hex1 {    
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-simultaneous-hex1 6s linear infinite;
 }
 
 .center-in-out-simultaneous>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-simultaneous-hex2 6s linear infinite;
 }
 
 .center-in-out-simultaneous>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-simultaneous-hex3 6s linear infinite;
 }
 
@@ -215,7 +233,7 @@
     }
     33.33333333333333%,
     66.66666666666667% {
-        transform: translate(12.5%, 8%);
+        transform: translate(45%, 23%);
     }
     100% {
         transform: translate(0, 0);
@@ -227,7 +245,7 @@
         transform: translate(0, 0);
     }
     33.33333333333333%, 66.66666666666667% {
-        transform: translate(-12.5%, 8%);
+        transform: translate(-45%, 23%);
     }
     100% {
         transform: translate(0, 0);
@@ -239,7 +257,7 @@
         transform: translate(0, 0);
     }
     33.33333333333333%, 66.66666666666667% {
-        transform: translate(0, -12.5%);
+        transform: translate(0, -45%);
     }
     100% {
         transform: translate(0, 0);
@@ -247,14 +265,20 @@
 }
 
 .center-in-out-one-by-one>.hex1 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-one-by-one-hex1 12s linear infinite;
 }
 
 .center-in-out-one-by-one>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-one-by-one-hex2 12s linear infinite;
 }
 
 .center-in-out-one-by-one>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
     animation: center-in-out-one-by-one-hex3 12s linear infinite;
 }
 
@@ -263,7 +287,7 @@
         transform: translate(0, 0);
     }
     8.33333333333333%, 58.33333333333333% {
-        transform: translate(12.5%, 8%);
+        transform: translate(45%, 23%);
     }
     66.66666666666667%,
     100% {
@@ -276,7 +300,7 @@
         transform: translate(0, 0);
     }
     16.66666666666667%, 66.66666666666667% {
-        transform: translate(-12.5%, 8%);
+        transform: translate(-45%, 23%);
     }
     75%, 100% {
         transform: translate(0, 0);
@@ -288,7 +312,7 @@
         transform: translate(0, 0);
     }
     25%, 75% {
-        transform: translate(0, -12.5%);
+        transform: translate(0, -45%);
     }
     83.33333333333333%, 100% {
         transform: translate(0, 0);
@@ -319,10 +343,10 @@
         transform: translate(0, 0) rotate(0deg);
     }
     33.33333333333333% {
-        transform: translate(35%, 22.4%) rotate(0deg);
+        transform: translate(45%, 23%) rotate(0deg);
     }
     66.66666666666667%, 100% {
-        transform: translate(35%, 22.4%) rotate(30deg);
+        transform: translate(45%, 23%) rotate(30deg);
     }
 }
 
@@ -331,21 +355,21 @@
         transform: translate(0, 0) rotate(0deg);
     }
     33.33333333333333% {
-        transform: translate(-35%, 22.4%) rotate(0deg);
+        transform: translate(-45%, 23%) rotate(0deg);
     }
     66.66666666666667%, 100% {
-        transform: translate(-35%, 22.4%) rotate(30deg);
+        transform: translate(-45%, 23%) rotate(30deg);
     }
 }
 /*hex 3 start position must be corrected*/
 @keyframes center-in-rotate-hex3 {
     0% {
-        transform: translate(0, 6.5%) rotate(0deg);
+        transform: translate(0, 0%) rotate(0deg);
     }
     33.33333333333333% {
-        transform: translate(0, -28.5%) rotate(0deg);
+        transform: translate(0, -45%) rotate(0deg);
     }
     66.66666666666667%, 100% {
-        transform: translate(0, -28.5%) rotate(30deg);
+        transform: translate(0, -45%) rotate(30deg);
     }
 }
