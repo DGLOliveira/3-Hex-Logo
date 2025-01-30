@@ -294,3 +294,58 @@
         transform: translate(0, 0);
     }
 }
+
+.center-in-rotate>.hex1 {
+    transform-box: fill-box;
+    transform-origin: center;
+
+    animation: center-in-rotate-hex1 4s linear infinite;
+}
+
+.center-in-rotate>.hex2 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: center-in-rotate-hex2 4s linear infinite;
+}
+
+.center-in-rotate>.hex3 {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: center-in-rotate-hex3 4s linear infinite;
+}
+
+@keyframes center-in-rotate-hex1 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33.33333333333333% {
+        transform: translate(35%, 22.4%) rotate(0deg);
+    }
+    66.66666666666667%, 100% {
+        transform: translate(35%, 22.4%) rotate(30deg);
+    }
+}
+
+@keyframes center-in-rotate-hex2 {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33.33333333333333% {
+        transform: translate(-35%, 22.4%) rotate(0deg);
+    }
+    66.66666666666667%, 100% {
+        transform: translate(-35%, 22.4%) rotate(30deg);
+    }
+}
+/*hex 3 start position must be corrected*/
+@keyframes center-in-rotate-hex3 {
+    0% {
+        transform: translate(0, 6.5%) rotate(0deg);
+    }
+    33.33333333333333% {
+        transform: translate(0, -28.5%) rotate(0deg);
+    }
+    66.66666666666667%, 100% {
+        transform: translate(0, -28.5%) rotate(30deg);
+    }
+}
